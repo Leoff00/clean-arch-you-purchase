@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { CacheStore } from "@/data/protocols/cache";
-import { LocalSavePurchases } from "@/data/usecases";
-import { SavePurchases } from "@/domain";
+import { LocalSavePurchases } from "@/data/usecases/save-purchases";
+import { SavePurchases } from "@/domain/usecases";
 
 class CacheStoreSpy implements CacheStore {
   deleteCallsCount = 0;
