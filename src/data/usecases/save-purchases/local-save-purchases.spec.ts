@@ -7,9 +7,9 @@ type SutTypes = {
   cacheStore: CacheStoreSpy;
 };
 
-const makeSut = (): SutTypes => {
+const makeSut = (timestamp = new Date()): SutTypes => {
   const cacheStore = new CacheStoreSpy();
-  const sut = new LocalSavePurchases(cacheStore);
+  const sut = new LocalSavePurchases(cacheStore, timestamp);
   return {
     sut,
     cacheStore,
@@ -31,25 +31,20 @@ describe("LocalSavePurchases", () => {
   });
 
   test("Should not insert new Cache if delete succeeds", async () => {
-    const { cacheStore, sut } = makeSut();
+    const timestamp = new Date();
+    const { cacheStore, sut } = makeSut(timestamp);
     const purchases = mockPurchases();
     await sut.save(purchases);
-    expect(cacheStore.messages).toEqual([
-      CacheStoreSpyNS.Message.delete,
-      CacheStoreSpyNS.Message.insert,
-    ]);
+    expect(cacheStore.messages).toEqual([CacheStoreSpyNS.Message.delete, CacheStoreSpyNS.Message.insert]);
     expect(cacheStore.insertKey).toBe("purchases");
-    expect(cacheStore.insertValues).toEqual(purchases);
+    expect(cacheStore.insertValues).toEqual({ timestamp, value: purchases });
   });
 
   test("Should throw if insert throws", async () => {
     const { cacheStore, sut } = makeSut();
     cacheStore.simulateInsertError();
     const promise = sut.save(mockPurchases());
-    expect(cacheStore.messages).toEqual([
-      CacheStoreSpyNS.Message.delete,
-      CacheStoreSpyNS.Message.insert,
-    ]);
+    expect(cacheStore.messages).toEqual([CacheStoreSpyNS.Message.delete, CacheStoreSpyNS.Message.insert]);
     await expect(promise).rejects.toThrow();
   });
 });
