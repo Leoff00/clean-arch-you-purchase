@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { LocalSavePurchases } from "@/data/usecases/save-purchases";
+import { LocalSavePurchases } from "@/data/usecases/load-purchases";
 import { mockPurchases, CacheStoreSpy, CacheStoreSpyNS } from "@/data/tests";
 
 type SutTypes = {
