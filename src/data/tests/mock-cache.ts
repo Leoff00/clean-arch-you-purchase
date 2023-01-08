@@ -6,13 +6,20 @@ export namespace CacheStoreSpyNS {
   export enum Action {
     delete,
     insert,
+    fetch,
   }
 }
 export class CacheStoreSpy implements CacheStore {
   actions: Array<CacheStoreSpyNS.Action> = [];
   deleteKey: string;
   insertKey: string;
+  fetchKey: string;
   insertValues: Array<SavePurchases.Params> = [];
+
+  fetch(key: string): void {
+    this.actions.push(CacheStoreSpyNS.Action.fetch);
+    this.fetchKey = key;
+  }
 
   delete(key: string): void {
     this.actions.push(CacheStoreSpyNS.Action.delete);

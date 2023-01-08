@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { LocalLoadPurchases } from "@/data/usecases/load-purchases";
-import { CacheStoreSpy } from "@/data/tests";
+import { CacheStoreSpy, CacheStoreSpyNS } from "@/data/tests";
 
 type SutTypes = {
   sut: LocalLoadPurchases;
@@ -20,5 +20,11 @@ describe("LocalSavePurchases", () => {
   test("Should not delete or insert cache on sut.init", () => {
     const { cacheStore } = makeSut();
     expect(cacheStore.actions).toEqual([]);
+  });
+  test("Should call correct key on load", async () => {
+    const { cacheStore, sut } = makeSut();
+    await sut.loadAll();
+    expect(cacheStore.actions).toEqual([CacheStoreSpyNS.Action.fetch]);
+    expect(cacheStore.fetchKey).toBe("purchases");
   });
 });
