@@ -50,4 +50,11 @@ export class CacheStoreSpy implements CacheStore {
       throw new Error();
     });
   }
+
+  simulateFetchError(): void {
+    vi.spyOn(CacheStoreSpy.prototype, "fetch").mockImplementationOnce(() => {
+      this.actions.push(CacheStoreSpyNS.Action.fetch);
+      throw new Error();
+    });
+  }
 }

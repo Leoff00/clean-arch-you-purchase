@@ -4,6 +4,6 @@ export namespace LoadPurchases {
   export type Result = PurchaseModel;
 }
 
-export interface SavePurchases {
+export interface LoadPurchases {
   loadAll: () => Promise<Array<LoadPurchases.Result>>;
 }
