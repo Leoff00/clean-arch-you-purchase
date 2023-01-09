@@ -37,7 +37,32 @@ describe("LocalSavePurchases", () => {
     const { cacheStore, sut } = makeSut(timestamp);
     cacheStore.fetchResult = { timestamp };
     sut.validate();
-    expect(cacheStore.fetchKey).toBe("purchases");
     expect(cacheStore.actions).toEqual([CacheStoreSpyNS.Action.fetch]);
+    expect(cacheStore.fetchKey).toBe("purchases");
+  });
+
+  test("Should delete cache if is expired", () => {
+    const currentDate = new Date();
+    const timestamp = getCacheExpirationDate(currentDate);
+    timestamp.setDate(timestamp.getDate() - 3);
+    timestamp.setSeconds(timestamp.getSeconds() - 1);
+    const { cacheStore, sut } = makeSut(currentDate);
+    cacheStore.fetchResult = { timestamp };
+    sut.validate();
+    expect(cacheStore.actions).toEqual([CacheStoreSpyNS.Action.fetch, CacheStoreSpyNS.Action.delete]);
+    expect(cacheStore.fetchKey).toBe("purchases");
+    expect(cacheStore.deleteKey).toBe("purchases");
+  });
+
+  test("Should delete cache if its on expiration date", () => {
+    const currentDate = new Date();
+    const timestamp = getCacheExpirationDate(currentDate);
+    timestamp.setDate(timestamp.getDate() - 3);
+    const { cacheStore, sut } = makeSut(currentDate);
+    cacheStore.fetchResult = { timestamp };
+    sut.validate();
+    expect(cacheStore.actions).toEqual([CacheStoreSpyNS.Action.fetch, CacheStoreSpyNS.Action.delete]);
+    expect(cacheStore.fetchKey).toBe("purchases");
+    expect(cacheStore.deleteKey).toBe("purchases");
   });
 });
