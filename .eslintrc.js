@@ -19,13 +19,10 @@ module.exports = {
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": [
       "error",
-      { allow: ["functions", "arrowFunctions"] },
+      { allow: ["functions", "arrowFunctions", "private-constructors"] },
     ],
     "no-use-before-define": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/explicit-function-return-type": [
-      "off",
-      { allowTypedFunctionExpressions: true },
-    ],
+    "@typescript-eslint/explicit-function-return-type": ["off", { allowTypedFunctionExpressions: true }],
   },
 };
