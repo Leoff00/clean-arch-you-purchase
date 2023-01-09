@@ -6,4 +6,5 @@ export namespace LoadPurchases {
 
 export interface LoadPurchases {
   loadAll: () => Promise<Array<LoadPurchases.Result>>;
+  validate: () => void;
 }

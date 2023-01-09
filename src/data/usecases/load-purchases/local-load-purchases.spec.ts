@@ -33,7 +33,6 @@ describe("LocalSavePurchases", () => {
   test("Should return a list of purchases if cache is valid", async () => {
     const currentDate = new Date();
     const timestamp = getCacheExpirationDate(currentDate);
-    timestamp.setDate(timestamp.getDate() - 3);
     timestamp.setSeconds(timestamp.getSeconds() + 1);
     const { cacheStore, sut } = makeSut(timestamp);
     cacheStore.fetchResult = {

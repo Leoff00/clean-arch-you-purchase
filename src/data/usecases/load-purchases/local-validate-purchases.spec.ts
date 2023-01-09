@@ -29,4 +29,15 @@ describe("LocalSavePurchases", () => {
     expect(cacheStore.actions).toEqual([CacheStoreSpyNS.Action.fetch, CacheStoreSpyNS.Action.delete]);
     expect(cacheStore.deleteKey).toBe("purchases");
   });
+
+  test("Should has no side effect if load succeeds", () => {
+    const currentDate = new Date();
+    const timestamp = getCacheExpirationDate(currentDate);
+    timestamp.setSeconds(timestamp.getSeconds() + 1);
+    const { cacheStore, sut } = makeSut(timestamp);
+    cacheStore.fetchResult = { timestamp };
+    sut.validate();
+    expect(cacheStore.fetchKey).toBe("purchases");
+    expect(cacheStore.actions).toEqual([CacheStoreSpyNS.Action.fetch]);
+  });
 });
